@@ -25,6 +25,11 @@ export async function useMailing(event: H3Event) {
     to: Array<{ Email: string }>;
     bcc?: Array<{ Email: string }>;
     cc?: Array<{ Email: string }>;
+    attachments?: Array<{
+      ContentType: string;
+      Filename: string;
+      Base64Content: string;
+    }>;
   }) => {
     return await mailjet.post("send", { version: "v3.1" }).request({
       Messages: [
@@ -36,6 +41,7 @@ export async function useMailing(event: H3Event) {
           Bcc: config.bcc,
           Subject: tt(config.subject),
           HTMLPart: config.template,
+          ...(config.attachments && { Attachments: config.attachments }),
         },
       ],
     });
