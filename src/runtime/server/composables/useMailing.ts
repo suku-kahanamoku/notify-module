@@ -6,6 +6,7 @@ import Mailjet from "node-mailjet";
 
 export async function useMailing(event: H3Event) {
   const tt = await useTranslation(event);
+  const url = process.env.FRONTEND_HOST;
 
   const mailjet = new Mailjet({
     apiKey: process.env.NUXT_MAILING_API_KEY,
@@ -16,7 +17,7 @@ export async function useMailing(event: H3Event) {
   });
 
   const template = async (cmp: Component, props: any) => {
-    return await render(cmp, { tt, ...props });
+    return await render(cmp, { tt, url, ...props });
   };
 
   const send = async (config: {
